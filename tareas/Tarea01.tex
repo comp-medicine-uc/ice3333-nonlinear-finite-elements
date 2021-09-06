@@ -1,0 +1,183 @@
+\documentclass[11pt,letterpaper]{article}
+
+
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{fourier}
+\usepackage{multicol}
+\usepackage{float}
+
+%\usepackage[spanish]{babel}  % Spanish language
+%\usepackage[applemac]{inputenc}  % Allows for accents!! Useful for spanish documents
+\usepackage[latin1]{inputenc} % Allows for accents, ansinew for Windows. Use latin1 for Linux
+%\linespread{1.6}  % double spaces lines
+%\usepackage{fullpage} % quick-and-dirty way to get 1in for all margins
+
+\usepackage{enumerate}
+\usepackage{graphicx,url}
+%\usepackage{hyperref}
+
+\usepackage[left=2cm,top=1.5cm,right=2cm,bottom=2cm,nohead]{geometry}
+%\pagestyle{empty}       % Uncomment if don't want page numbers
+%\parskip 7.2pt           % sets spacing between paragraphs
+%\renewcommand{\baselinestretch}{2.0} % Uncomment for 2.0 spacing between lines
+\setlength{\parindent}{0pt}		 % sets leading space for paragraphs
+
+%\linespread{1.3}  % Line spacing: use 1.3 for one and a half, 1.6 for double spacing
+% User-def commands
+\newcommand{\pd}[2]{\frac{\partial #1}{ \partial #2}}   % First partial derivative command
+\newcommand{\td}[2]{\frac{\mathrm{d} #1}{ \mathrm{d} #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{ \partial #2 ^2}}   % Second partial derivative command
+\newcommand{\pddc}[3]{\frac{\partial^2 #1}{ \partial #2 \partial #3}}   % Second partial derivative command
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mbfh}[1]{\hat{\mathbf{#1}}}
+
+%%% Macros  %%%
+\def\python{\mbox{\tt Python}}
+\def\R{\mbox{\(\mathbb{R}\)}}
+\def\dx{\mbox{\(\,\mathrm{d}x\)}}
+\def\TODO{\mbox{\tt TODO}}
+
+% Continuum mechanics & FEM symbols
+\def\sca   #1{\mbox{\rm{#1}}{}}
+\def\mat   #1{\mbox{\boldmath $\mathsf #1$}}
+\def\vec   #1{\mbox{\boldmath $#1$}{}}
+\def\ten   #1{\mbox{\boldmath $#1$}{}}
+\def\Ass  {\overset{\hspace*{0.4cm} n_{\scas{el}}}
+          {\underset{\scaf{c},\scaf{d}=1}{\msf{A}}}}
+\def\ltr   #1{\mbox{\sf{#1}}}
+\def\bltr  #1{\mbox{\sffamily{\bfseries{{#1}}}}}
+
+% math operators and symbols
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\symm}{symm}
+\DeclareMathOperator{\sk}{skew}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Grad}{Grad}
+\DeclareMathOperator{\dive}{div}
+\DeclareMathOperator{\Dive}{Div}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\Curl}{Curl}
+
+\def\python{\mbox{\tt Python }}
+
+
+\newtheorem{solucion}{Soluci\'on}
+\newtheorem*{solucion*}{Soluci\'on}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Encabezado       %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}[t]{.14\textwidth}
+	\vspace{-0.8cm}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=2cm]{LogoUC-BN.pdf}
+	\end{figure}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{.85\textwidth}
+\vspace{0.05cm}
+	\begin{flushleft}
+	PONTIFICIA UNIVERSIDAD CAT\'OLICA DE CHILE
+	
+	Escuela de Ingenier\'ia
+	
+	Departamento de Ingenier\'ia Estructural y Geot\'ecnica
+	
+	\textbf{ICE3333 Elementos Finitos No-Lineales}
+	
+	Segundo Semestre \the\year
+	\end{flushleft}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-10pt}
+\begin{center}
+\large
+{\bf Tarea \# 1}\\
+Fecha de entrega: 07-Septiembre-\the\year, 17:00 hrs
+\rule{\linewidth}{0.4mm}
+
+\end{center}
+
+\vspace{-8pt}
+\textbf{Nota importante}: Todos los desarrollos te\'oricos y c\'odigos computacionales deben ser elaborados en forma individual. Los conceptos generales de los problemas pueden ser discutidos en grupos, pero las soluciones no deben ser comparadas. El informe debe ser elaborado en \LaTeX, y debe contener todos los desarrollos te\'oricos, resultados num\'ericos, figuras y explicaciones pedidas para la tarea. Se considerar\'a como parte de la evaluaci\'on de la tarea la correcta diagramaci\'on, redacci\'on y presentaci\'on del informe, pudiendo descontarse hasta 2.0 puntos por este concepto. Todos los c\'odigos desarrollados en \python deben ser adjuntados en un archivo {\tt Jupyter Notebook} ejecutado. El informe en formato digital y todos los c\'odigos utilizados (archivos {\tt .tex,.ipynb} y figuras) deben ser enviados al correo {\tt ice3333uc@gmail.com} y subidos a la plataforma de
+Canvas antes de la fecha de entrega. No cumplir con lo anterior implica nota $1.0$ en la tarea. Incluya en su informe el n\'umero de horas dedicadas a esta tarea. No se aceptar\'an tareas ni c\'odigos despu\'es de la fecha de entrega.
+
+\rule{\linewidth}{0.4mm}\\[20pt]
+
+
+%\begin{center}
+%	\includegraphics[width=\textwidth]{}\\
+%	{\bf Figura 1}
+%\end{center}
+
+{\bf Problema \# 1} (M\'etodo de Newton) 
+\begin{enumerate}[i)]
+\item Implemente el m\'etodo de Newton en {\tt Python}. Para lo anterior, construya la funci\'on 
+{\tt  x, solverlog = NewtonSolver(Rfunc, solverparams)} donde 
+\begin{itemize}
+	\item {\tt Rfunc(x)} entrega la lista {\tt  [R, DR]} con el residual y el operador tangente evaluados en {\tt x}
+	\item {\tt solverparams} es una lista con los par\'ametros necesarios para el m\'etodo de Newton ({\tt [tol, nitmax]})
+	\item {\tt solverlog} es una lista de listas con informaci\'on sobre las iteraciones de Newton {\tt [it, error, xit]}, donde {\it} es el n\'umero de la iteraci\'on, {\tt error} es la norma euclidiana de {\tt xit}, y {\tt xit} es el valor de la soluci\'on en la iteraci\'on.
+\end{itemize}
+
+\item Utilice su implementaci\'on del m\'etodo de Newton para encontrar minimizadores de las siguientes funciones usando los puntos iniciales entregados:
+	\begin{itemize}
+		\item $R(x,y):= \sin(x)\sin(y)$, con puntos iniciales $(1,1)$ y $(2,2)$
+		\item $R(x,y):= (x-1)^2 + (y-1)^2$, con punto iniciales $(0,0)$ y $(2,2)$
+		\item $R(x,y):= \sqrt{ (x-1)^2 + (y-1)^2}$, con punto iniciales $(0,0)$ y $(2,2)$
+	\end{itemize}
+	Incluye en su informe tablas de convergencia para cada caso, donde se reporte el n\'umero de iteraci\'on y el error asociado. Comente sobre los patrones de convergencia obtenidos.
+
+\item Entregue gr\'aficos de contorno\footnote{Utilice la funci\'on {\tt contourf} de {\tt matplotlib}} de las funciones descritas en ii), graficando los puntos entregados por el m\'etodo de Newton para cada iteraci\'on para cada uno de los casos de condici\'on inicial.
+
+\end{enumerate}	
+
+\newpage
+
+
+{\bf Problema \# 2} (Derivada de Gateaux) Sea $\vec \varphi \in C^1(\Omega,\R^3)$; $\ten I \in \R^{3 \times 3}$ el tensor identidad; $\mu, \lambda \in \R$.
+Entregue la derivada gateaux en la direcci\'on $\vec \eta \in C^1(\Omega,\R^3)$ de los siguientes mapeos
+
+\begin{enumerate}[i)]
+	\item $\ten C(\vec \varphi):= \nabla \vec \varphi^T \nabla \vec \varphi$
+	\item $I_1(\vec \varphi) := \trace(\ten C(\vec \varphi)) $
+	\item $J(\vec \varphi) := \det (\nabla \vec \varphi) $
+	\item $\Pi(\vec \varphi)$:= $\int_{B_0}^{}$ $\frac{\mu}{2} \{ I_1(\vec \varphi)  -3 \} - \mu \text{ln} \left( J(\vec \varphi) \right)+\frac{\lambda}{2} \{\text{ln} \left(J(\vec \varphi)\right) \}^2$ d$B_0$
+\end{enumerate}
+
+
+
+\vspace{10pt}
+		
+{\bf Problema \# 3} (Problemas el\'ipticos) Sea $\mathcal{V} = H^1_{0}(\Omega, \R^n)$. Considere el problema variacional de elasticidad: Encuentre $\vec u \in \mathcal{V}$ tal que
+\begin{equation*}
+	a(\vec v, \vec u) = F(\vec v) \qquad \forall \vec v \in \mathcal{V},
+\end{equation*}
+donde
+\begin{align}
+	a(\vec v, \vec u):= \int_{\Omega} \varepsilon(\vec v) : \mathbb{C} \varepsilon(\vec u), \label{eq:biform}\\
+	\varepsilon(\vec w) = \frac{1}{2}\left( \nabla \vec w + \nabla \vec w^T\right), \notag
+\end{align}
+y $\mathbb{C}$ es un tensor de cuarto orden positivo-definido, es decir, 
+\begin{align*}
+	\vec \xi : \mathbb{C} \vec \xi & \geq 0 \qquad \forall \; \vec \xi \in \R^{n\times n},\\
+	\vec \xi : \mathbb{C} \vec \xi & = 0 \quad \Rightarrow \quad \vec \xi = 0
+\end{align*}
+\begin{enumerate}[i)]
+	\item Demuestre que $a:\mathcal{V} \times \mathcal{V} \to \R$ definida en \eqref{eq:biform} es una forma bilineal, acotada y $\mathcal{V}$-el\'iptica. En particular, entregue estimaciones para las constantes $\gamma, \alpha$ de acotamiento y coercividad, respectivamente.\footnote{Estudie el an\'alisis para el problema de Poisson, y la desigualdad de Korn}
+\end{enumerate}
+
+
+
+
+
+
+\end{document}
