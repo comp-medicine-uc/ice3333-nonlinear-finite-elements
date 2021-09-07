@@ -1,0 +1,178 @@
+\documentclass[11pt,letterpaper]{article}
+
+
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{fourier}
+\usepackage{multicol}
+\usepackage{float}
+
+%\usepackage[spanish]{babel}  % Spanish language
+%\usepackage[applemac]{inputenc}  % Allows for accents!! Useful for spanish documents
+\usepackage[latin1]{inputenc} % Allows for accents, ansinew for Windows. Use latin1 for Linux
+%\linespread{1.6}  % double spaces lines
+%\usepackage{fullpage} % quick-and-dirty way to get 1in for all margins
+
+\usepackage{enumerate}
+\usepackage{graphicx,url}
+%\usepackage{hyperref}
+
+\usepackage[left=2cm,top=1.5cm,right=2cm,bottom=2cm,nohead]{geometry}
+%\pagestyle{empty}       % Uncomment if don't want page numbers
+%\parskip 7.2pt           % sets spacing between paragraphs
+%\renewcommand{\baselinestretch}{2.0} % Uncomment for 2.0 spacing between lines
+\setlength{\parindent}{0pt}		 % sets leading space for paragraphs
+
+%\linespread{1.3}  % Line spacing: use 1.3 for one and a half, 1.6 for double spacing
+% User-def commands
+\newcommand{\pd}[2]{\frac{\partial #1}{ \partial #2}}   % First partial derivative command
+\newcommand{\td}[2]{\frac{\mathrm{d} #1}{ \mathrm{d} #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{ \partial #2 ^2}}   % Second partial derivative command
+\newcommand{\pddc}[3]{\frac{\partial^2 #1}{ \partial #2 \partial #3}}   % Second partial derivative command
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mbfh}[1]{\hat{\mathbf{#1}}}
+
+%%% Macros  %%%
+\def\python{\mbox{\tt Python}}
+\def\R{\mbox{\(\mathbb{R}\)}}
+\def\dx{\mbox{\(\,\mathrm{d}x\)}}
+\def\TODO{\mbox{\tt TODO}}
+
+% Continuum mechanics & FEM symbols
+\def\sca   #1{\mbox{\rm{#1}}{}}
+\def\mat   #1{\mbox{\boldmath $\mathsf #1$}}
+\def\vec   #1{\mbox{\boldmath $#1$}{}}
+\def\ten   #1{\mbox{\boldmath $#1$}{}}
+\def\Ass  {\overset{\hspace*{0.4cm} n_{\scas{el}}}
+          {\underset{\scaf{c},\scaf{d}=1}{\msf{A}}}}
+\def\ltr   #1{\mbox{\sf{#1}}}
+\def\bltr  #1{\mbox{\sffamily{\bfseries{{#1}}}}}
+
+% math operators and symbols
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\symm}{symm}
+\DeclareMathOperator{\sk}{skew}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Grad}{Grad}
+\DeclareMathOperator{\dive}{div}
+\DeclareMathOperator{\Dive}{Div}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\Curl}{Curl}
+
+\def\python{\mbox{\tt Python }}
+
+
+\newtheorem{solucion}{Soluci\'on}
+\newtheorem*{solucion*}{Soluci\'on}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Encabezado       %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}[t]{.14\textwidth}
+	\vspace{-0.8cm}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=2cm]{LogoUC-BN.pdf}
+	\end{figure}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{.85\textwidth}
+\vspace{0.05cm}
+	\begin{flushleft}
+	PONTIFICIA UNIVERSIDAD CAT\'OLICA DE CHILE
+	
+	Escuela de Ingenier\'ia
+	
+	Departamento de Ingenier\'ia Estructural y Geot\'ecnica
+	
+	\textbf{ICE3333 Elementos Finitos No-Lineales}
+	
+	Segundo Semestre \the\year
+	\end{flushleft}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-10pt}
+\begin{center}
+\large
+{\bf Tarea \# 2}\\
+Fecha de entrega: 20-Septiembre-\the\year, 18:00 hrs
+\rule{\linewidth}{0.4mm}
+
+\end{center}
+
+\vspace{-8pt}
+\textbf{Nota importante}: Todos los desarrollos te\'oricos y c\'odigos computacionales deben ser elaborados en forma individual. Los conceptos generales de los problemas pueden ser discutidos en grupos, pero las soluciones no deben ser comparadas. El informe debe ser elaborado en \LaTeX, y debe contener todos los desarrollos te\'oricos, resultados num\'ericos, figuras y explicaciones pedidas para la tarea. Se considerar\'a como parte de la evaluaci\'on de la tarea la correcta diagramaci\'on, redacci\'on y presentaci\'on del informe, pudiendo descontarse hasta 2.0 puntos por este concepto. Todos los c\'odigos desarrollados en \python deben ser adjuntados en un archivo {\tt Jupyter Notebook} ejecutado. El informe en formato digital y todos los c\'odigos utilizados (archivos {\tt .tex,.ipynb} y figuras) deben ser enviados al correo {\tt ice3333uc@gmail.com} y subidos a la plataforma de
+Canvas antes de la fecha de entrega. No cumplir con lo anterior implica nota $1.0$ en la tarea. Incluya en su informe el n\'umero de horas dedicadas a esta tarea. No se aceptar\'an tareas ni c\'odigos despu\'es de la fecha de entrega.
+
+\rule{\linewidth}{0.4mm}\\[20pt]
+
+
+%\begin{center}
+%	\includegraphics[width=\textwidth]{}\\
+%	{\bf Figura 1}
+%\end{center}
+
+{\bf Problema \# 1} (Sistema Reacci\'on-Difusi\'on Biestable): Sea $\Omega = [0,1]^2$. Considere el problema de evoluci\'on de un sistema biestable, definido por 
+\begin{equation}
+\left.
+\begin{aligned}
+	\pd{u}{t}  +\dive (\underbrace{-\sigma \nabla u}_{=:\vec q(\nabla u)}) = \underbrace{u (1-u)(u-\alpha)}_{=:f(u)}, & \quad \text{en } \Omega \times (0,T],\\
+	u = 0, & \quad \text{sobre } \partial \Omega,\\
+	u(\cdot,0) = u_0(\vec x), & \quad \text{en } \Omega
+\end{aligned}
+\right\}\tag{S}
+\label{eq:S}
+\end{equation}
+Considere para sus c\'alculos que $\sigma = 0.002, \alpha = 0.5$ y $T=5$. Se pide
+\begin{enumerate}[i)]
+
+\item Para resolver \eqref{eq:S} discretize primero en el tiempo usando un esquema impl\'icito Backward-Euler. Para esto, discretize el intervalo de tiempo $[0,T]$ de manera de obtener una secuencia de BVP no-lineales para cada paso de tiempo. Entregue la formulaci\'on fuerte $(S)_{n+1}$ asociado al paso g\'enerico $t=t_{n+1}$, donde se asume conocida la soluci\'on $u(\cdot, t_{n})$.
+
+\item Formule un esquema NLFEM para la soluci\'on num\'erica del problema $(S)_{n+1}$. Entregue las expresiones de las componentes del residual $\mat R^e$ y el operador tangente $\mat T\mat R^e$.
+
+\item Implemente en {\tt Python} las siguientes funciones asociadas a la formulaci\'on descrita en ii):
+	\begin{itemize}
+		\item {\tt [M, TM] = material\_RDBistable(material\_state, material\_parameters)}: rutina que calcula cantidades y sus derivadas a nivel de material. Para el caso particular del sistema RD-biestable, {\tt material\_state = [u, grad\_u]}, {\tt material\_parameters = [sigma,alpha,dt]}, con {\tt dt} el paso de tiempo, y {\tt M = [q,f], TM = [Tq, Tf]}.
+		
+		\item {\tt [Re, TRe] = element\_RDBistable\_P1(element\_state, element\_parameters)}: rutina que calcula el residual y su tangente a nivel de un elemento triangular lineal de Lagrange ($P_1$) donde {\tt element\_state = [ue, uen]} es una lista con el vector con valores nodales del campo $u^{eh}$ para la iteraci\'on actual ({\tt ue}) y para el paso de tiempo anterior convergido ({\tt uen}), y {\tt element\_parameters = [xe, material\_parameters]}, con {\tt xe} la lista con vectores de coordenadas nodales. 
+		\item {\tt [R, TR] = model\_RDBistable\_P1(model\_state, model\_parameters)}: rutina que calcula el residual y su tangente a nivel de modelo donde {\tt model\_state = [u,un]} el vector de valores nodales del campo $u^h$ para la iteraci\'on actual ({\tt u}) y para el paso de tiempo anterior ({\tt un}), y {\tt model\_parameters = [xyz, IEN, LM, material\_parameters]}, con {\tt xyz} la tabla de coordenadas nodales, y {\tt IEN} la tabla de conectividad, {\tt LM} la tabla de colocaci\'on.
+	\end{itemize}
+
+
+\item  Utilice las rutinas descritas en iii) para resolver mediante elementos finitos no-lineales el problema espacio-tiempo descrito por \eqref{eq:S}. Considere como condici\'on inicial la distribuci\'on dada por 
+\begin{equation}
+u_0(x,y) = \text{sin} (6 \pi x) \  \text{sin} (6 \pi y) 
+\end{equation}
+ Entregue figuras de la distribuci\'on espacial de $u$ en $t=0$, $t=T/2$ y $t=T$ y comente sobre sus resultados, y como afecta a la soluci\'on del problema el uso de distintos tama\~nos de discretizaci\'on espacial y temporal. Genere adem\'as un video en {\tt Paraview} mostrando la evoluci\'on temporal del problema.
+
+\item Repita lo solicitado en iv) considerando la condici\'on inicial 	
+	\begin{equation}
+		u_0(x,y) = X \sim U([0,1])
+	\end{equation}
+donde $X$ es una variable aleatoria con densidad de probabilidad uniforme intervalo $[0,1]$.
+
+
+
+
+\end{enumerate}	
+
+{\bf Problema \# 2} (Test de Consistencia) 
+
+\begin{enumerate}[i)]
+	\item Derive la expresi\'on para el test de consistencia de 4to orden basado en el uso de stencils de 5-puntos con m\'odulo $h=10^{-3}$.
+	\item Implemente el test de consistencia de 4to orden mediante la funci\'on
+	\begin{center}
+	{\tt error = ConsistencyTest(func, state, params)}
+	\end{center}
+donde {\tt func} es la funci\'on a ser testeada, y {\tt params} es la lista con los par\'ametros necesarios para dicha funci\'on. Utilice esta rutina para testear sus funciones {\tt material\_RDBistable, element\_RDBistable\_P1, model\_RDBistable\_P1} usando par\'ametros entregados en el problema 1 y valores de {\tt state = [x0,x0n]} aleatorios dentro de un rango razonable.
+\end{enumerate}
+
+
+
+\end{document}
