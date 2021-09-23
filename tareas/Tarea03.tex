@@ -1,0 +1,158 @@
+\documentclass[11pt,letterpaper]{article}
+
+
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{fourier}
+\usepackage{multicol}
+\usepackage{float}
+
+%\usepackage[spanish]{babel}  % Spanish language
+%\usepackage[applemac]{inputenc}  % Allows for accents!! Useful for spanish documents
+\usepackage[latin1]{inputenc} % Allows for accents, ansinew for Windows. Use latin1 for Linux
+%\linespread{1.6}  % double spaces lines
+%\usepackage{fullpage} % quick-and-dirty way to get 1in for all margins
+
+\usepackage{enumerate}
+\usepackage{graphicx,url}
+%\usepackage{hyperref}
+
+\usepackage[left=2cm,top=1.5cm,right=2cm,bottom=2cm,nohead]{geometry}
+%\pagestyle{empty}       % Uncomment if don't want page numbers
+%\parskip 7.2pt           % sets spacing between paragraphs
+%\renewcommand{\baselinestretch}{2.0} % Uncomment for 2.0 spacing between lines
+\setlength{\parindent}{0pt}		 % sets leading space for paragraphs
+
+%\linespread{1.3}  % Line spacing: use 1.3 for one and a half, 1.6 for double spacing
+% User-def commands
+\newcommand{\pd}[2]{\frac{\partial #1}{ \partial #2}}   % First partial derivative command
+\newcommand{\td}[2]{\frac{\mathrm{d} #1}{ \mathrm{d} #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{ \partial #2 ^2}}   % Second partial derivative command
+\newcommand{\pddc}[3]{\frac{\partial^2 #1}{ \partial #2 \partial #3}}   % Second partial derivative command
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\mbf}[1]{\mathbf{#1}}
+\newcommand{\mbfh}[1]{\hat{\mathbf{#1}}}
+
+%%% Macros  %%%
+\def\python{\mbox{\tt Python}}
+\def\R{\mbox{\(\mathbb{R}\)}}
+\def\dx{\mbox{\(\,\mathrm{d}x\)}}
+\def\TODO{\mbox{\tt TODO}}
+
+% Continuum mechanics & FEM symbols
+\def\sca   #1{\mbox{\rm{#1}}{}}
+\def\mat   #1{\mbox{\boldmath $\mathsf #1$}}
+\def\vec   #1{\mbox{\boldmath $#1$}{}}
+\def\ten   #1{\mbox{\boldmath $#1$}{}}
+\def\Ass  {\overset{\hspace*{0.4cm} n_{\scas{el}}}
+          {\underset{\scaf{c},\scaf{d}=1}{\msf{A}}}}
+\def\ltr   #1{\mbox{\sf{#1}}}
+\def\bltr  #1{\mbox{\sffamily{\bfseries{{#1}}}}}
+
+% math operators and symbols
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\symm}{symm}
+\DeclareMathOperator{\sk}{skew}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\Grad}{Grad}
+\DeclareMathOperator{\dive}{div}
+\DeclareMathOperator{\Dive}{Div}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\Curl}{Curl}
+
+\def\python{\mbox{\tt Python }}
+
+
+\newtheorem{solucion}{Soluci\'on}
+\newtheorem*{solucion*}{Soluci\'on}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Encabezado       %%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{minipage}[t]{.14\textwidth}
+	\vspace{-0.8cm}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=2cm]{LogoUC-BN.pdf}
+	\end{figure}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{.85\textwidth}
+\vspace{0.05cm}
+	\begin{flushleft}
+	PONTIFICIA UNIVERSIDAD CAT\'OLICA DE CHILE
+	
+	Escuela de Ingenier\'ia
+	
+	Departamento de Ingenier\'ia Estructural y Geot\'ecnica
+	
+	\textbf{ICE3333 Elementos Finitos No-Lineales}
+	
+	Segundo Semestre \the\year
+	\end{flushleft}
+\end{minipage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-10pt}
+\begin{center}
+\large
+{\bf Tarea \# 3}\\
+Fecha de entrega: 07-Octubre-\the\year, 18:00 hrs
+\rule{\linewidth}{0.4mm}
+
+\end{center}
+
+\vspace{-8pt}
+\textbf{Nota importante}: Todos los desarrollos te\'oricos y c\'odigos computacionales deben ser elaborados en forma individual. Los conceptos generales de los problemas pueden ser discutidos en grupos, pero las soluciones no deben ser comparadas. El informe debe ser elaborado en \LaTeX, y debe contener todos los desarrollos te\'oricos, resultados num\'ericos, figuras y explicaciones pedidas para la tarea. Se considerar\'a como parte de la evaluaci\'on de la tarea la correcta diagramaci\'on, redacci\'on y presentaci\'on del informe, pudiendo descontarse hasta 2.0 puntos por este concepto. Todos los c\'odigos desarrollados en \python deben ser adjuntados en un archivo {\tt Jupyter Notebook} ejecutado. El informe en formato digital y todos los c\'odigos utilizados (archivos {\tt .tex,.ipynb} y figuras) deben ser enviados al correo {\tt ice3333uc@gmail.com} y subidos a la plataforma de
+Canvas antes de la fecha de entrega. No cumplir con lo anterior implica nota $1.0$ en la tarea. Incluya en su informe el n\'umero de horas dedicadas a esta tarea. No se aceptar\'an tareas ni c\'odigos despu\'es de la fecha de entrega.
+
+\rule{\linewidth}{0.4mm}\\[20pt]
+
+
+{\bf Problema \# 1} (total 2.0 ptos.): Utilice un enfoque $LRW$ para proponer un esquema NL-FEM para resolver el problema de elasticidad no-lineal. Tome como punto de partida la formulaci\'on d\'ebil Material (principio de trabajos virtuales) y describa claramente cada uno de sus pasos. Compare sus resultados con los obtenidos en clases usando un esquema $RLW$. \\
+
+
+
+
+
+
+{\bf Problema \#2} (total 4.0 ptos.): Implemente un c\'odigo NL-FEM en {\tt python} para resolver el problema 3D de la barra prism\'atica de goma de secci\'on transversal cuadrada de la Figura 1. Para las dimensiones de la barra, considere $L=100\,\rm mm$ y  $h=5\,\rm mm$. 
+\begin{center}
+	\includegraphics[width=0.5\textwidth]{./t03_fig01.pdf}\\
+	{\bf Figura 1: Barra de goma prism\'atica}
+\end{center}
+Se modela la goma como un material NeoHookean compresible, cuyas componentes del PK2 y tensor el\'astico Lagrangeano (relaci\'on constitutiva) quedan dadas por
+\begin{align*}
+S_{IJ} &= \mu \delta_{IJ} + (\lambda \ln J - \mu) C^{-1}_{IJ},\\
+C_{IJKL} &= \lambda C_{IJ}^{-1} C_{KL}^{-1}  + 2(\mu - \lambda \ln J) C_{IK}^{-1} C_{JL}^{-1},
+\end{align*}
+con valores de constantes $\mu = 1.5\,\rm MPa, \lambda =50 MPa$. Para la discretizaci\'on espacial utilice elementos trilineales hexa\'edricos isoparam\'etricos (Q1). Considere que los extremos est\'an totalmente empotrados, y que el extremo derecho de la barra se desplaza incrementalmente hasta llegar a un desplazamiento de $\Delta X_1 = 50\,\rm mm $.\\
+
+
+En particular se pide:
+\begin{enumerate}[i)]
+	\item Entrege las rutinas 
+	\begin{itemize}
+		\item \texttt{[S, C] = material\_NLElasticity\_NH(material\_state, material\_parameters)}, donde \\\texttt{material\_state} es el tensor Lagrangeano de deformaci\'on, {\tt material\_parameters = [mu, lam]}, {\tt S} es el tensor PK2 y {\tt C} es el tensor el\'astico material.\footnote{Dada la simetr\'ia de los tensores, se recomienda usar la representaci\'on de Voigt, donde los tensores de segundo orden sim\'etricos se representan por un vector en $\R^6$ y el tensor el\'astico por una matriz en $\R^{6 \times 6}$}
+		\item {\tt [Re, TRe] = element\_NLElasticity\_NH(element\_state,element\_parameters)}, donde\\ {\tt element\_state} es un vector con los valores nodales del elemento del mapeo de deformaci\'on en la iteraci\'on previa, y  {\tt element\_parameters = [Xeset, material\_parameters]} con {\tt Xeset} una lista de las coordenadas nodales del elemento en la configuraci\'on Material.
+		\item {\tt [R, TR] = model\_NLElasticity\_NH(model\_state, model\_parameters)}, donde {\tt model\_state = [U]} contiene el vector de valores nodales del mapeo de deformaci\'on, y {\tt model\_state = [XYZ, IEN, LM, material\_parameters]}.  
+	\end{itemize}
+	
+	Verifique que sus rutinas pasan el test de consistencia de 4to orden programado en la tarea pasada entregando los valores obtenidos para el error para 5 realizaciones del vector de perturbaci\'on para cada rutina. En todos los casos, utilice $h=10^{-3}$. (2.0 ptos.)
+	\item Entregue una curva de fuerza vs. deformaci\'on para la barra\footnote{Para calcular la fuerza se recomienda sumar las reacciones horizontales en los nodos de uno de los empotramientos de la barra} (0.75 ptos.)
+	\item Entregue un video de como se deforma la barra (evoluci\'on de la configuraci\'on espacial) a medida que se incrementa la carga. Para efectos de la visualizaci\'on, genere una rutina que a partir de la geometr\'ia reducida y sus desplazamientos nodales entregue una geometr\'ia completa con sus desplazamientos nodales obtenidos a partir del modelo reducido y las simetr\'ias asumidas. (0.5 ptos.)
+	\item Entregue un video de como se desarrollan las tensiones de von Mises en el plano $Z=0$ a medida que se incrementa la carga.\footnote{Utilice el m\'etodo de suavizaci\'on de tensiones $L^2$ para encontrar los valores nodales del mapa de tensiones. Verifique que el peso de su video no sobrepase los 5Mb. En caso de necesitar reducir el tama\~no del video, utilice el formato {\tt .ogv} para guardar su video en Paraview.} (0.75 ptos.)
+\end{enumerate}
+
+
+ Para el desarrollo de este problema, en la p\'agina de la tarea se encuentra disponible el archivo {\tt T2functions.py}
+ que contiene la funci\'on {\tt RubberBarGeom(L,h,nx,ny,nz)} , la cual discretiza la barra prism\'atica utilizando elementos trilineales hexa\'edricos de manera que existan {\tt nx} tramos en la direcci\'on x, {\tt ny} tramos en la direcci\'on y, y {\tt nz} tramos en la direcci\'on z. Esta funci\'on retorna la
+ tabla de coordenadas globales xyz, la tabla de destinaci\'on ID, la tabla de conectividad IEN, y la tabla de
+ colocaci\'on LM.
+
+
+\end{document}
